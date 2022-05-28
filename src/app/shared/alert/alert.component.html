@@ -1,0 +1,4 @@
+<div *ngFor="let alert of (alertService.alerts$ | async)" [ngClass]="['alert', 'alert-dismissible', 'alert-' + alert.type ]" >
+	<a class="close" (click)="alertService.removeAlert(alert)">&times;</a>
+	<span>{{alert.message}}</span>
+</div>

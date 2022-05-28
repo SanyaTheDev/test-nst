@@ -1,0 +1,14 @@
+<div class="form-group">
+	<label *ngIf="label" [for]="id">{{ label }}</label>
+	<input
+		[id]="id"
+		[formControl]="control"
+		class="form-control"
+		[type]= "type"
+		[placeholder]="placeholder || label"
+		autocomplete="off"
+    [readonly]="isReadonly"
+    [required]="true"
+	/>
+	<span class="invalid-feedback"><ng-content></ng-content></span>
+</div>
