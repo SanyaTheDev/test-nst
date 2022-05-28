@@ -8,7 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "server": "json-server -w server/db.json",
-    "dev": "concurrently \"npm run server\" \"npm start\""
+    "dev": "concurrently \"npm run server\" \"npm start\"",
+    "test": "ng test"
   },
   "private": true,
   "dependencies": {
