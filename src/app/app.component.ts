@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {AlertService} from "./shared/alert/alert.service";
-import {ModalService} from "./shared/modal/modal.service";
-import {Person} from "./core/models/person";
-import {PersonService} from "./core/services/person.service";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ValidationService} from "./core/services/validation.service";
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AlertService } from "./shared/alert/alert.service";
+import { ModalService } from "./shared/modal/modal.service";
+import { Person } from "./core/models/person";
+import { PersonService } from "./core/services/person.service";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { ValidationService } from "./core/services/validation.service";
 
 @Component({
   selector: 'app-root',
@@ -12,6 +12,8 @@ import {ValidationService} from "./core/services/validation.service";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  serverError: string;
+
   persons: Person[] = [];
   person: Person;
 
@@ -22,16 +24,21 @@ export class AppComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private _validationService: ValidationService,
     private _alertService: AlertService,
-    private _modalService: ModalService
+    private _modalService: ModalService,
+    private cdr: ChangeDetectorRef
   ) {
+  }
+
+  ngAfterContentChecked() {
+    this.cdr.detectChanges();
   }
 
   ngOnInit() {
     this.getAllPersons();
 
     this.form = this._formBuilder.group({
-      firstName: ['', Validators.required, Validators.maxLength(25)],
-      lastName: ['', Validators.required, Validators.maxLength(25)]
+      firstName: ['', Validators.compose([Validators.required, Validators.maxLength(25)])],
+      lastName: ['', Validators.compose([Validators.required, Validators.maxLength(25)])]
     })
   }
 
@@ -56,8 +63,8 @@ export class AppComponent implements OnInit {
           return 0;
         });
       },
-      error: () => {
-
+      error: response => {
+        this.serverError = (response.error && response.error.error_description) || response.message;
       }
     });
   }
@@ -140,13 +147,15 @@ export class AppComponent implements OnInit {
 
   openModalToUpdate(personId: number) {
     this.person = this.persons.find(x => x.id === personId);
+    console.log(personId);
+    console.log(this.person);
     this.form.controls['firstName'].setValue(this.person.firstName);
     this.form.controls['lastName'].setValue(this.person.lastName);
-    this._modalService.open('edit-person');
+    this._modalService.open('update-person');
   }
 
   closeModalToUpdate() {
-    this._modalService.close('edit-person');
+    this._modalService.close('update-person');
     this.person = null;
   }
 

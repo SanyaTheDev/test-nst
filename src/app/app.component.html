@@ -1,18 +1,16 @@
-<div class="form-row">
-  <div class="pl-2 pt-2 pb-0">
-    <h5>Persons</h5>
-  </div>
-  <div class="col-auto ml-auto">
-    <button type="button" class="btn btn-danger ml-auto pl-4 pr-4" (click)="openModalToAdd()"><i
-      class="fas fa-plus mr-2"></i>Add
-    </button>
+<div *ngIf="serverError" class="alert alert-danger">{{ serverError }}</div>
+
+<div class="d-flex justify-content-between">
+  <h5 class="p-2 pt-3">Persons</h5>
+  <div class="pad-r pt-2">
+    <button type="button" class="btn btn-primary ml-auto pl-4 pr-4" (click)="openModalToAdd()">Add person</button>
   </div>
 </div>
-
 
 <hr class="mt-2 m-0"/>
 
 <ng-container>
+
   <div *ngIf="persons && persons.length; else empty">
     <div class="row d-none d-xl-block align-items-center">
       <div class="col-12">
@@ -23,69 +21,56 @@
           <div class="col-xl-5 text-muted">
             <small>Last name</small>
           </div>
-          <div class="col-xl-2 text-muted">
+          <div class="col-xl-2">
           </div>
         </div>
       </div>
     </div>
 
-    <div class="row d-none -d-xl-block">
-      <div class="col-12">
-        <hr class="mt-2 m-0"/>
-      </div>
+    <div class="col-12 d-none d-xl-block">
+      <hr class="mt-2 m-0"/>
     </div>
+  </div>
 
-    <div *ngFor="let person of persons">
-      <div class="hover position-relative">
-        <div class="row align-items-center">
-          <div class="col-12">
-            <div class="row">
-              <div class="d-block d-xl-none col-3 text-muted">
-                <small>First name</small>
-              </div>
-              <div class="col-9 col-xl-5 mt-xl-0">
-                {{ person.firstName }}
-              </div>
-              <div class="d-block d-xl-none col-3 text-muted">
-                <small>Last name</small>
-              </div>
-              <div class="col-9 col-xl-5 mt-xl-0">
-                {{ person.lastName }}
-              </div>
-
-              <div class="d-flex mt-xl-0 ml-auto mr-3 actions-wrapper">
-                <div class="align-middle">
-                  <a class="btn-icon btn-icon-primary pr-2" title="Edit" role="button"
-                     (click)="openModalToUpdate(person.id)">
-                    <i class="fa fa-pen"></i>
-                  </a>
-                </div>
-                <div class="align-middle ml-4">
-                  <a class="btn-icon btn-icon-danger pr-2" title="Delete" role="button"
-                     (click)="openModalToDelete(person)">
-                    <i class="fa fa-trash"></i>
-                  </a>
-                </div>
-              </div>
-            </div>
+  <div *ngFor="let person of persons">
+    <div class="hover position-relative">
+      <div class="row align-items-center p-2 pt-3">
+        <div class="col-12">
+          <div class="row">
+            <div class="d-block d-xl-none col-3 text-black-50"><small>First name</small></div>
+            <div class="col-9 col-xl-5">{{ person.firstName }}</div>
+            <div class="d-block d-xl-none col-3 text-black-50"><small>Last name</small></div>
+            <div class="col-9 col-xl-5">{{ person.lastName }}</div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-12">
-            <hr class="mt-2 m-0"/>
+        <div class="d-flex position-absolute justify-content-end actions-wrapper">
+          <div class="align-middle">
+            <a class="btn-icon btn-icon-primary" title="Edit" role="button" (click)="openModalToUpdate(person.id)">
+              <i class="fa fa-pen"></i>
+            </a>
           </div>
+          <div class="align-middle mar-l">
+            <a class="btn-icon btn-icon-dangers" title="Delete" role="button" (click)="openModalToDelete(person)">
+              <i class="fas fa-trash"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <hr class="mt-2 m-0"/>
         </div>
       </div>
     </div>
   </div>
 
   <ng-template #empty>
-    <div class="text-black-50 mt-3 pr-2 pl-2">
-      <h6>You don't have any persons.</h6>
+    <div class="text-black-50">
+      <h6 class="p-2">You don't have any person.</h6>
     </div>
   </ng-template>
-</ng-container>
 
+</ng-container>
 
 <app-modal id="add-person">
   <div class="modal fade show d-block" tabindex="-1" role="dialog">
@@ -152,7 +137,8 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" (click)="closeModalToUpdate()">Cancel</button>
-          <button type="button" class="btn btn-primary ml-auto pl-4 pr-4" (click)="updatePerson(person.id)">Add</button>
+          <button type="button" class="btn btn-primary ml-auto pl-4 pr-4" (click)="updatePerson(person.id)">Add
+          </button>
         </div>
       </div>
     </div>
@@ -182,3 +168,5 @@
     </div>
   </div>
 </app-modal>
+
+<app-alert></app-alert>
